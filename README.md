@@ -1,2 +1,2 @@
 # Bankist
-Practicing arrays in JS through Jonas S. course 
+Practicing arrays in JS through Jonas Schmedtmann's course.
