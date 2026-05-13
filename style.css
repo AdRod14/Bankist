@@ -94,7 +94,7 @@ nav {
   gap: 2rem;
 
   /* NOTE This creates the fade in/out anumation */
-  opacity: 0;
+  /* opacity: 0; */
   transition: all 1s;
 }
 
@@ -276,7 +276,7 @@ h2 {
   border-radius: 0.7rem;
   font-size: 1.8rem;
   background-color: #fff;
-  cursor: pointer;
+  cursor: pointer;  
   transition: all 0.3s;
 }
 

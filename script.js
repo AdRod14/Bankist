@@ -61,12 +61,54 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+
+const displayMovements = function(movements) {
+  containerMovements.innerHTML = '';
+  movements.forEach(function(mov, i) {
+    const type = mov > 0 ? 'deposit' : 'withdrawal';
+    const html = `
+      <div class="movements__row">
+        <div class="movements__type movements__type--${type}">${i+1} ${type}</div>
+        <div class="movements__value">${mov}</div>
+      </div>
+    `;
+
+    containerMovements.insertAdjacentHTML('afterbegin', html);
+
+  })
+}
+
+
+const calcPrintBalance = function(movements){
+  const balance = movements.reduce((acc, curr) => acc + curr, 0);
+  labelBalance.textContent = `${balance} EUR`;
+}
+
+
+const createUsernames = function(accs) {
+  accs.forEach(function(acc) {
+    acc.username = acc.owner
+    .toLowerCase()
+    .split(' ')
+    .map((name) => name[0])
+    .join('');
+  })
+};
+
+displayMovements(account1.movements)
+
+createUsernames(accounts);
+
+calcPrintBalance(account1.movements);
+
+
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
 
 
-//const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
@@ -153,7 +195,7 @@ movements.forEach(function(movement, index, array) {
 */
 
 ///////////////////// FOR EACH WITH MAPS AND SETS //////////////////////
-
+/*
 const currencies = new Map([
   ['USD', 'United States dollar'],
   ['EUR', 'Euro'],
@@ -169,3 +211,63 @@ console.log(currenciesUnique);
 currenciesUnique.forEach(function(value, _, set){
   console.log(`${value}: ${value}`);
 })
+*/
+/*
+//////////////////////// DATA TRANSFORMATIONS: MAP, FILTER AND REDUCE ////////////////////////
+
+//// MAP
+///TAKES AN ARRAY, LOOPS OVER IT AND APPLIES CALLBACK FUNCTION, RETURNING RESULTS IN NEW ARRAY
+
+const euroToUsd = 1.1;
+
+// const movementsUSD = movements.map(function(mov) {
+//   return mov * euroToUsd;
+// })
+
+const movementsUSD = movements.map((mov) =>  mov * euroToUsd);
+
+console.log(movements);
+console.log(movementsUSD);
+
+const movementsUSDfor = [];
+for(const mov of movements){
+  movementsUSDfor.push(mov * euroToUsd);
+}
+console.log(movementsUSDfor);
+
+const movementsDescriptions = movements.map((mov, index, arr) => 
+  `Movement ${index+1}: You ${mov > 0 ? 'deposited' : 'withdrew'} ${Math.abs(mov)}`);
+
+console.log(movementsDescriptions);
+
+
+
+//// FILTER
+///TAKES AN ARRAY, RETURNS NEW ARRAY CONTAINING THE ELEMENTS THAT PASSED A CONDITION
+
+const deposits = movements.filter(function(mov) {
+  return mov > 0
+})
+const withdrawals = movements.filter((mov) => mov < 0)
+console.log(movements);
+console.log(deposits);
+console.log(withdrawals);
+
+
+
+//// REDUCE
+/// REDUCES ALL ELEMENTS OF AN ARRAY TO A SINGLE VALUE
+/// first parameter in callback function is an accumulator
+
+const balance = movements.reduce(function(acc, cur, i, arr) {
+  console.log(`Iteration ${i}: ${acc}`);
+  return acc + cur
+}, 0);
+
+console.log(balance);
+
+//Get maximum value
+const max = movements.reduce((acc, curr) => acc > curr? acc : curr, movements[0]);
+console.log(max);
+*/
+
