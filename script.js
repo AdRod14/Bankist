@@ -174,6 +174,43 @@ btnTransfer.addEventListener('click', function(e) {
 });
 
 
+btnLoan.addEventListener('click', function(e) {
+  e.preventDefault();
+
+  const amount = Number(inputLoanAmount.value);
+
+  if(amount > 0 && currentAccount.movements.some(mov => mov >= amount*0.1)){
+    //Add movement
+    currentAccount.movements.push(amount);
+
+    //update UI
+    updateUI(currentAccount);
+  }
+
+  inputLoanAmount.value = '';
+
+});
+
+
+btnClose.addEventListener('click', function(e) {
+  e.preventDefault();
+
+  if(inputCloseUsername.value === currentAccount.username && Number(inputClosePin.value) === currentAccount.pin){
+    const index = accounts.findIndex(acc => acc.username === currentAccount.username);
+    console.log(index);
+
+    //Delete account
+    accounts.splice(index, 1);
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+  }
+
+  inputClosePin.value = inputCloseUsername.value = '';
+
+});
+
+
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -368,9 +405,57 @@ console.log(accounts);
 const account = accounts.find((acc) => acc.owner === 'Jessica Davis');
 console.log(account);
 
+
+
+//////////////////////  FINDLAST AND FINDLASTINDEX METHODS //////////////////////
+
+console.log(movements);
+
+const lastWithdrawal = movements.findLast(mov => mov < 0);
+console.log(lastWithdrawal);
+
+const latestLargeMovementIndex = movements.findLastIndex(mov => Math.abs(mov) > 1000);
+
+console.log(`Your latest large movement was ${movements.length - latestLargeMovementIndex} movements ago`);
+
+
+/////////////// SOME AND EVERY METHOD //////////////////
+console.log(movements);
+
+//Equality
+console.log(movements.includes(-130));
+
+//SOME:Condition   - if one element at least complies with the condition
+console.log(movements.some(mov => mov === -130));
+
+const anyDeposits = movements.some(mov => mov > 1500);
+console.log(anyDeposits);
+
+
+//EVERY:Condition   - if all elements complie with the condition
+console.log(movements.every(mov => mov > 0));
+console.log(account4.movements.every(mov => mov > 0));
+
+// Separate callback
+const deposit = (mov) => mov > 0;
+console.log(movements.some(deposit));
+
 */
 
+//////////////   FLAT nad FLATMAP   ////////////////////
+const arr = [[1,2,3],[4,5,6],7,8];
+console.log(arr.flat());   //[1,2,3,4,5,6,7,8]
 
+const arrDeep = [[[1,2],3], [4,[5,6]], 7, 8];
+console.log(arrDeep.flat(2));
 
+const accountMovements = accounts.map(acc => acc.movements);
+console.log(accountMovements);
+const allMovements = accountMovements.flat();
+console.log(allMovements);
+const overallBalance = allMovements.reduce((acc, curr) => acc + curr, 0);
+console.log(overallBalance);
 
-
+//Flatmap is a combination of flat and map, but flatmap just goes 1 level deep
+const overallBalance2 = accounts.flatMap(acc => acc.movements).reduce((acc, curr) => acc + curr, 0);
+console.log(overallBalance2);
