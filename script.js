@@ -62,9 +62,12 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 
-const displayMovements = function(movements) {
+const displayMovements = function(movements, sort = false) {
   containerMovements.innerHTML = '';
-  movements.forEach(function(mov, i) {
+
+  const movs = sort ? movements.slice().sort((a,b) => a - b) : movements 
+
+  movs.forEach(function(mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `
       <div class="movements__row">
@@ -211,6 +214,12 @@ btnClose.addEventListener('click', function(e) {
 });
 
 
+let sorted = false;
+btnSort.addEventListener('click', function(e){
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+})
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -440,7 +449,7 @@ console.log(account4.movements.every(mov => mov > 0));
 const deposit = (mov) => mov > 0;
 console.log(movements.some(deposit));
 
-*/
+
 
 //////////////   FLAT nad FLATMAP   ////////////////////
 const arr = [[1,2,3],[4,5,6],7,8];
@@ -459,3 +468,38 @@ console.log(overallBalance);
 //Flatmap is a combination of flat and map, but flatmap just goes 1 level deep
 const overallBalance2 = accounts.flatMap(acc => acc.movements).reduce((acc, curr) => acc + curr, 0);
 console.log(overallBalance2);
+
+
+/////////////////// SORTING ////////////////////
+//Sorting mutates the original array
+//Sorts through strings
+
+
+
+//Strings
+const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
+console.log(owners.sort());
+
+
+
+//Numbers
+console.log(movements);
+//Return < 0, A, B (keep order)
+//Return > 0, B, A (switch order)
+
+//Ascending
+// movements.sort((a,b) => {
+//   if (a > b){
+//     return 1;
+//   }
+//   if (a < b){
+//     return -1;
+//   }
+// });
+movements.sort((a,b) => a - b);
+
+//Descending
+movements.sort((a,b) => b - a);
+console.log(movements);
+
+*/
